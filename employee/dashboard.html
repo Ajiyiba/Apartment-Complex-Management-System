@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard | Property Management System</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header>
+            <div class="header-content">
+                <h1>Property Management System</h1>
+                <div class="user-info">
+                    <span>Welcome, Employee</span>
+                    <a href="login.html" class="btn btn-small">Logout</a>
+                </div>
+            </div>
+        </header>
+        
+        <nav class="dashboard-nav">
+            <ul>
+                <li><a href="#" class="active" data-tab="dashboard">Dashboard</a></li>
+                <li><a href="#" class="tab-link" data-tab="complexes">Complexes</a></li>
+                <li><a href="#" class="tab-link" data-tab="apartments">Apartments</a></li>
+                <li><a href="#" class="tab-link" data-tab="residents">Residents</a></li>
+                <li><a href="#" class="tab-link" data-tab="requests">Maintenance</a></li>
+                <li><a href="#" class="tab-link" data-tab="leases">Leases</a></li>
+                <li><a href="#" class="tab-link" data-tab="employees">Employees</a></li>
+                <li><a href="#" class="tab-link" data-tab="projects">Projects</a></li>
+                <li><a href="#" class="tab-link" data-tab="commissions">Contractors</a></li>
+            </ul>
+        </nav>
+        
+        <div class="filter-bar">
+            <div class="filter-group">
+                <label for="location">Filter by Location:</label>
+                <select id="location" class="filter-select">
+                    <option value="all">All Locations</option>
+                    <!-- Location options will be populated dynamically -->
+                </select>
+            </div>
+        </div>
+        
+        <main class="dashboard-main">
+            <!-- Dashboard Overview Section -->
+            <section class="dashboard-section tab-content active" id="dashboard">
+                <h2>Dashboard Overview</h2>
+                
+                <section class="dashboard-subsection">
+                    <h3>Quick Actions</h3>
+                    <div class="quick-actions">
+                        <a href="add-employee.html" class="action-card">
+                            <div class="action-icon">👤</div>
+                            <h3>Add New Employee</h3>
+                            <p>Create a new employee record</p>
+                        </a>
+                        <a href="manage-complex.html" class="action-card">
+                            <div class="action-icon">🏢</div>
+                            <h3>Manage Complex</h3>
+                            <p>Update complex managers</p>
+                        </a>
+                        <a href="add-renter.html" class="action-card">
+                            <div class="action-icon">🏠</div>
+                            <h3>Add New Renter</h3>
+                            <p>Create a new resident record</p>
+                        </a>
+                        <a href="assign-lease.html" class="action-card">
+                            <div class="action-icon">📝</div>
+                            <h3>Assign Lease</h3>
+                            <p>Create contract for resident</p>
+                        </a>
+                        <a href="create-project.html" class="action-card">
+                            <div class="action-icon">🏗️</div>
+                            <h3>Create Project</h3>
+                            <p>Register development project</p>
+                        </a>
+                        <a href="commission-contractor.html" class="action-card">
+                            <div class="action-icon">🔨</div>
+                            <h3>Commission Contractor</h3>
+                            <p>Assign project to external company</p>
+                        </a>
+                    </div>
+                </section>
+                
+                <section class="dashboard-subsection">
+                    <h3>Recent Activities</h3>
+                    <div class="recent-activities" id="recent-activities">
+                        <!-- Recent activities will be populated dynamically -->
+                        <div class="loading-message">Loading recent activities...</div>
+                    </div>
+                </section>
+                
+                <section class="dashboard-subsection">
+                    <h3>System Overview</h3>
+                    <div class="overview-grid">
+                        <div class="overview-card">
+                            <h3 id="total-units">-</h3>
+                            <p>Total Units</p>
+                        </div>
+                        <div class="overview-card">
+                            <h3 id="occupied-units">-</h3>
+                            <p>Occupied Units</p>
+                        </div>
+                        <div class="overview-card">
+                            <h3 id="vacant-units">-</h3>
+                            <p>Vacant Units</p>
+                        </div>
+                        <div class="overview-card">
+                            <h3 id="pending-requests">-</h3>
+                            <p>Pending Requests</p>
+                        </div>
+                        <div class="overview-card">
+                            <h3 id="active-projects">-</h3>
+                            <p>Active Projects</p>
+                        </div>
+                    </div>
+                </section>
+            </section>
+            
+            <!-- Complexes Tab -->
+            <section class="dashboard-section tab-content" id="complexes">
+                <h2>Complex Management</h2>
+                <div class="table-container">
+                    <table id="complexes-table" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Complex #</th>
+                                <th>Street</th>
+                                <th>City</th>
+                                <th>State</th>
+                                <th>Manager</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Table will be populated dynamically -->
+                            <tr>
+                                <td colspan="6" class="loading-message">Loading complex data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- Apartments Tab -->
+            <section class="dashboard-section tab-content" id="apartments">
+                <h2>Apartment Management</h2>
+                <div class="filter-options" style="background-color: #e9f7ef; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #28a745;">
+                    <div class="filter-group">
+                        <label for="apartment-complex-filter" style="font-weight: bold; color: #155724;">Complex:</label>
+                        <select id="apartment-complex-filter" class="filter-select" style="border: 1px solid #28a745;">
+                            <option value="all">All Complexes</option>
+                            <!-- Will be populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="apartment-unit-filter" style="font-weight: bold; color: #155724;">Unit:</label>
+                        <input type="text" id="apartment-unit-filter" placeholder="Unit Number" class="filter-select" style="border: 1px solid #28a745; width: 100px;" />
+                    </div>
+                    <div class="filter-group">
+                        <label for="apartment-status-filter" style="font-weight: bold; color: #155724;">Status:</label>
+                        <select id="apartment-status-filter" class="filter-select" style="border: 1px solid #28a745;">
+                            <option value="all">All Status</option>
+                            <option value="Occupied">Occupied</option>
+                            <option value="Vacant">Vacant</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="apartment-floorplan-filter" style="font-weight: bold; color: #155724;">Floor Plan:</label>
+                        <select id="apartment-floorplan-filter" class="filter-select" style="border: 1px solid #28a745;">
+                            <option value="all">All Floor Plans</option>
+                            <!-- Will be populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="filter-group" style="display: flex; align-items: flex-end; gap: 10px;">
+                        <button id="search-apartments-button" class="btn" style="background-color: #28a745; border-color: #28a745; color: white; padding: 6px 15px; font-size: 14px;">Search</button>
+                        <button id="reset-apartment-filters" class="btn btn-sm" style="background-color: #6c757d; border-color: #6c757d; color: white; padding: 5px 10px; font-size: 12px;">Reset</button>
+                    </div>
+                </div>
+                <div id="apartment-count" class="filter-results-count" style="margin-bottom: 10px; font-weight: bold;"></div>
+                <div class="table-container">
+                    <table id="apartments-table" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Complex</th>
+                                <th>Room</th>
+                                <th>Floor Plan</th>
+                                <th>Street</th>
+                                <th>City</th>
+                                <th>State</th>
+                                <th>Status</th>
+                                <th>Renter</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Table will be populated dynamically -->
+                            <tr>
+                                <td colspan="9" class="loading-message">Use the search button to find apartments</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- Residents Tab -->
+            <section class="dashboard-section tab-content" id="residents">
+                <h2>Resident Management</h2>
+                <div class="table-container">
+                    <table id="residents-table" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>SSN</th>
+                                <th>Credit Score</th>
+                                <th>Complex</th>
+                                <th>Room</th>
+                                <th>Floor Plan</th>
+                                <th>City</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Table will be populated dynamically -->
+                            <tr>
+                                <td colspan="8" class="loading-message">Loading resident data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- Maintenance Requests Tab -->
+            <section class="dashboard-section tab-content" id="requests">
+                <h2>Maintenance Requests</h2>
+                <div class="table-container">
+                    <table id="requests-table" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Description</th>
+                                <th>Complex</th>
+                                <th>Type</th>
+                                <th>Reported By</th>
+                                <th>Location</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Table will be populated dynamically -->
+                            <tr>
+                                <td colspan="7" class="loading-message">Loading maintenance requests...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- Leases Tab -->
+            <section class="dashboard-section tab-content" id="leases">
+                <h2>Lease Management</h2>
+                <div class="table-container">
+                    <table id="leases-table" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Contract ID</th>
+                                <th>Renter</th>
+                                <th>Type</th>
+                                <th>Payment Amount</th>
+                                <th>Complex</th>
+                                <th>Room</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Table will be populated dynamically -->
+                            <tr>
+                                <td colspan="7" class="loading-message">Loading lease data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- Employees Tab -->
+            <section class="dashboard-section tab-content" id="employees">
+                <h2>Employee Management</h2>
+                <div class="filter-options" style="background-color: #e9f7ef; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #28a745;">
+                    <div class="filter-group">
+                        <label for="employee-search" style="font-weight: bold; color: #155724;">Search:</label>
+                        <input type="text" id="employee-search" placeholder="Search by name or SSN" class="filter-select" style="border: 1px solid #28a745; width: 250px;" />
+                    </div>
+                    <div class="filter-group" style="display: flex; align-items: flex-end; gap: 10px;">
+                        <button id="search-employees-button" class="btn" style="background-color: #28a745; border-color: #28a745; color: white; padding: 6px 15px; font-size: 14px;">Search</button>
+                        <button id="reset-employee-filters" class="btn btn-sm" style="background-color: #6c757d; border-color: #6c757d; color: white; padding: 5px 10px; font-size: 12px;">Reset</button>
+                    </div>
+                </div>
+                <div id="employee-count" class="filter-results-count" style="margin-bottom: 10px; font-weight: bold;"></div>
+                <div class="table-container">
+                    <table id="employees-table" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>SSN</th>
+                                <th>Salary</th>
+                                <th>Assigned Complexes</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Table will be populated dynamically -->
+                            <tr>
+                                <td colspan="5" class="loading-message">Loading employee data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- Projects Tab -->
+            <section class="dashboard-section tab-content" id="projects">
+                <h2>Development Projects</h2>
+                <div class="table-container">
+                    <table id="projects-table" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Type</th>
+                                <th>Complex</th>
+                                <th>Budget</th>
+                                <th>Street</th>
+                                <th>City</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Table will be populated dynamically -->
+                            <tr>
+                                <td colspan="7" class="loading-message">Loading project data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- Commissions Tab -->
+            <section class="dashboard-section tab-content" id="commissions">
+                <h2>Contractor Management</h2>
+                <div class="table-container">
+                    <table id="commissions-table" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Project</th>
+                                <th>Complex</th>
+                                <th>Hours</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Table will be populated dynamically -->
+                            <tr>
+                                <td colspan="5" class="loading-message">Loading contractor data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/employee.js"></script>
+    
+    <!-- Edit Employee Modal -->
+    <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editEmployeeForm">
+                        <input type="hidden" id="editEmployeeESSN" name="essn">
+                        
+                        <div class="mb-3">
+                            <label for="editEmployeeName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="editEmployeeName" name="name" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="editEmployeeSalary" class="form-label">Salary</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" step="0.01" min="0" class="form-control" id="editEmployeeSalary" name="salary" required>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Employee Edit Modal -->
+    <div id="employeeEditModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Edit Employee</h2>
+            <form id="editEmployeeForm">
+                <div class="form-group">
+                    <label for="editEssn">Employee SSN (ESSN)</label>
+                    <input type="text" id="editEssn" name="essn" class="form-control" readonly>
+                    <small>Only last 4 digits are shown for security</small>
+                </div>
+                <div class="form-group">
+                    <label for="editEmployeeName" class="form-label">Full Name</label>
+                    <input type="text" id="editEmployeeName" name="name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="editEmployeeSalary" class="form-label">Salary</label>
+                    <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input type="number" step="0.01" min="0" id="editEmployeeSalary" name="salary" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary close-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load dashboard stats
+            loadDashboardStats();
+            
+            // Check URL parameters for tab selection or new employee notification
+            const urlParams = new URLSearchParams(window.location.search);
+            const tabParam = urlParams.get('tab');
+            const newEmployee = urlParams.get('newEmployee');
+            
+            // If new employee parameter exists, alert the user
+            if (newEmployee === 'true') {
+                setTimeout(() => {
+                    showSuccessMessage('New employee has been added successfully!');
+                }, 500);
+            }
+            
+            // If tab parameter exists, switch to that tab
+            if (tabParam) {
+                const tabLink = document.querySelector(`a[data-tab="${tabParam}"]`);
+                if (tabLink) {
+                    tabLink.click();
+                    return; // Skip the default dashboard activation
+                }
+            }
+            
+            // Set dashboard as the active tab by default (if no tab parameter)
+            document.getElementById('dashboard').classList.add('active');
+            const dashboardNavLink = document.querySelector('a[data-tab="dashboard"]');
+            if (dashboardNavLink) {
+                dashboardNavLink.classList.add('active');
+            }
+            
+            // Make the dashboard tab link clickable
+            const dashboardLink = document.querySelector('a[data-tab="dashboard"]');
+            if (dashboardLink) {
+                dashboardLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Hide all tabs
+                    document.querySelectorAll('.tab-content').forEach(tab => {
+                        tab.classList.remove('active');
+                    });
+                    
+                    // Show dashboard tab
+                    document.getElementById('dashboard').classList.add('active');
+                    
+                    // Update active tab
+                    document.querySelectorAll('.dashboard-nav a').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // Refresh dashboard data
+                    loadDashboardStats();
+                });
+            }
+            
+            // Create a direct function to open the Apartments tab
+            const apartmentsLink = document.querySelector('a[data-tab="apartments"]');
+            if (apartmentsLink) {
+                apartmentsLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Hide all tabs
+                    document.querySelectorAll('.tab-content').forEach(tab => {
+                        tab.classList.remove('active');
+                    });
+                    
+                    // Show apartments tab
+                    const apartmentsTab = document.getElementById('apartments');
+                    apartmentsTab.classList.add('active');
+                    
+                    // Update active tab highlight
+                    document.querySelectorAll('.dashboard-nav a').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // Load filter options without loading apartment data
+                    initializeApartmentFilters();
+                });
+            }
+            
+            // Create a function to open the Complexes tab
+            const complexesLink = document.querySelector('a[data-tab="complexes"]');
+            if (complexesLink) {
+                complexesLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Hide all tabs
+                    document.querySelectorAll('.tab-content').forEach(tab => {
+                        tab.classList.remove('active');
+                    });
+                    
+                    // Show complexes tab
+                    const complexesTab = document.getElementById('complexes');
+                    complexesTab.classList.add('active');
+                    
+                    // Update active tab highlight
+                    document.querySelectorAll('.dashboard-nav a').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // Load complexes data
+                    loadComplexesData();
+                });
+            }
+            
+            // Load recent activities (from maintenance requests, newest first)
+            loadRecentActivities();
+            
+            // Setup search button for apartments
+            const searchButton = document.getElementById('search-apartments-button');
+            if (searchButton) {
+                searchButton.addEventListener('click', function() {
+                    // Get current filter values
+                    loadApartmentsData();
+                });
+            }
+            
+            // Setup apartment filters
+            const complexFilter = document.getElementById('apartment-complex-filter');
+            if (complexFilter) {
+                complexFilter.addEventListener('change', function() {
+                    // Do not automatically apply filters, wait for search button
+                });
+            }
+            
+            const unitFilter = document.getElementById('apartment-unit-filter');
+            if (unitFilter) {
+                // Do not automatically apply filters, wait for search button
+            }
+            
+            const statusFilter = document.getElementById('apartment-status-filter');
+            if (statusFilter) {
+                statusFilter.addEventListener('change', function() {
+                    // Do not automatically apply filters, wait for search button
+                });
+            }
+            
+            const floorPlanFilter = document.getElementById('apartment-floorplan-filter');
+            if (floorPlanFilter) {
+                floorPlanFilter.addEventListener('change', function() {
+                    // Do not automatically apply filters, wait for search button
+                });
+            }
+            
+            const resetFiltersBtn = document.getElementById('reset-apartment-filters');
+            if (resetFiltersBtn) {
+                resetFiltersBtn.addEventListener('click', function() {
+                    if (complexFilter) complexFilter.value = 'all';
+                    if (unitFilter) unitFilter.value = '';
+                    if (statusFilter) statusFilter.value = 'all';
+                    if (floorPlanFilter) floorPlanFilter.value = 'all';
+                    
+                    // Clear the apartment table
+                    const table = document.getElementById('apartments-table');
+                    if (table && table.querySelector('tbody')) {
+                        table.querySelector('tbody').innerHTML = '<tr><td colspan="9" class="loading-message">Use the search button to find apartments</td></tr>';
+                    }
+                    
+                    // Clear the count display
+                    const countDisplay = document.getElementById('apartment-count');
+                    if (countDisplay) {
+                        countDisplay.textContent = '';
+                    }
+                });
+            }
+        });
+        
+        // Function to load dashboard stats
+        async function loadDashboardStats() {
+            try {
+                const response = await getDashboardStats();
+                
+                if (response.success) {
+                    const stats = response.data;
+                    
+                    // Update overview cards with actual data
+                    document.getElementById('total-units').textContent = stats.Total_Units;
+                    document.getElementById('occupied-units').textContent = stats.Occupied_Units;
+                    document.getElementById('vacant-units').textContent = stats.Vacant_Units;
+                    document.getElementById('pending-requests').textContent = stats.Pending_Requests;
+                    document.getElementById('active-projects').textContent = stats.Active_Projects;
+                }
+            } catch (error) {
+                console.error('Error loading dashboard stats:', error);
+            }
+        }
+        
+        // Function to load recent activities
+        async function loadRecentActivities() {
+            try {
+                // Get maintenance requests for recent activities
+                const response = await getMaintenanceRequests();
+                
+                if (response.success) {
+                    const activitiesContainer = document.getElementById('recent-activities');
+                    activitiesContainer.innerHTML = ''; // Clear loading message
+                    
+                    // Take up to 3 most recent maintenance requests
+                    // This is a simplified approach - in a real app, you might sort by date
+                    const recentRequests = response.data.slice(0, 3);
+                    
+                    if (recentRequests.length > 0) {
+                        recentRequests.forEach(request => {
+                            const activityCard = document.createElement('div');
+                            activityCard.className = 'activity-card';
+                            
+                            activityCard.innerHTML = `
+                                <div class="activity-icon">🔔</div>
+                                <div class="activity-details">
+                                    <h4>Maintenance Request</h4>
+                                    <p>${request.Description} - Complex ${request.Complex_Number}</p>
+                                    <span class="activity-time">Project ID: ${request.Project_ID}</span>
+                                </div>
+                            `;
+                            
+                            activitiesContainer.appendChild(activityCard);
+                        });
+                    } else {
+                        activitiesContainer.innerHTML = '<p>No recent activities found.</p>';
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading recent activities:', error);
+                const activitiesContainer = document.getElementById('recent-activities');
+                activitiesContainer.innerHTML = '<p>Error loading recent activities.</p>';
+            }
+        }
+    </script>
+</body>
+</html> 

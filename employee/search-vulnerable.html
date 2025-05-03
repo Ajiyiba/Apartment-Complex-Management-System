@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vulnerable Search Form</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Vulnerable Employee Search</h1>
+        <form method="GET" action="../server/search-result.php">
+            <div class="form-group">
+                <label for="search">Search by Name:</label>
+                <input type="text" id="search" name="search" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+</body>
+</html>

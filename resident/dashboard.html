@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resident Dashboard | Property Management System</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/resident.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header>
+            <div class="header-content">
+                <h1>Property Management System</h1>
+                <div class="user-info">
+                    <span>Welcome, Resident</span>
+                    <a href="login.html" class="btn btn-small">Logout</a>
+                </div>
+            </div>
+        </header>
+        
+        <nav class="dashboard-nav">
+            <ul>
+                <li><a href="#" class="active">Dashboard</a></li>
+                <li><a href="#payments">Payment Portal</a></li>
+                <li><a href="#leases">Renew/Cancel Lease</a></li>
+                <li><a href="#maintenance">Maintenance Requests</a></li>
+                <li><a href="#details">Lease Details</a></li>
+            </ul>
+        </nav>
+        
+        <main class="dashboard-main">
+            <section class="dashboard-section">
+                <h2>Quick Actions</h2>
+                <div class="quick-actions">
+                    <a href="report-issue.html" class="action-card">
+                        <div class="action-icon">🔧</div>
+                        <h3>Report Issue</h3>
+                        <p>Submit a maintenance request</p>
+                    </a>
+                    <a href="#make-payment" class="action-card">
+                        <div class="action-icon">💰</div>
+                        <h3>Make Payment</h3>
+                        <p>Pay your monthly rent</p>
+                    </a>
+                    <a href="#view-documents" class="action-card">
+                        <div class="action-icon">📄</div>
+                        <h3>View Documents</h3>
+                        <p>Access lease and important documents</p>
+                    </a>
+                    <a href="#message-management" class="action-card">
+                        <div class="action-icon">✉️</div>
+                        <h3>Message Management</h3>
+                        <p>Contact property management</p>
+                    </a>
+                </div>
+            </section>
+            
+            <section class="dashboard-section">
+                <h2>Next Payment</h2>
+                <div class="payment-info">
+                    <div class="payment-card">
+                        <div class="payment-amount">$1,200.00</div>
+                        <div class="payment-details">
+                            <p class="payment-date">Due: May 1, 2025</p>
+                            <p class="payment-status">Status: <span class="status-upcoming">Upcoming</span></p>
+                        </div>
+                        <button class="btn btn-primary">Pay Now</button>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="dashboard-section">
+                <h2>Recent Maintenance Requests</h2>
+                <div class="maintenance-list">
+                    <div class="maintenance-card">
+                        <div class="maintenance-icon">🚿</div>
+                        <div class="maintenance-details">
+                            <h4>Plumbing Issue</h4>
+                            <p>Leaky faucet in bathroom</p>
+                            <p class="maintenance-date">Reported: April 15, 2025</p>
+                            <p class="maintenance-status">Status: <span class="status-in-progress">In Progress</span></p>
+                        </div>
+                    </div>
+                    <div class="maintenance-card">
+                        <div class="maintenance-icon">🔌</div>
+                        <div class="maintenance-details">
+                            <h4>Electrical Issue</h4>
+                            <p>Kitchen outlet not working</p>
+                            <p class="maintenance-date">Reported: April 10, 2025</p>
+                            <p class="maintenance-status">Status: <span class="status-completed">Completed</span></p>
+                        </div>
+                    </div>
+                    <a href="report-issue.html" class="report-issue-link">Report a New Issue</a>
+                </div>
+            </section>
+            
+            <section class="dashboard-section">
+                <h2>Lease Information</h2>
+                <div class="lease-info">
+                    <div class="lease-detail">
+                        <h4>Apartment</h4>
+                        <p>Unit 303, Building C</p>
+                    </div>
+                    <div class="lease-detail">
+                        <h4>Lease Term</h4>
+                        <p>Jan 1, 2025 - Dec 31, 2025</p>
+                    </div>
+                    <div class="lease-detail">
+                        <h4>Monthly Rent</h4>
+                        <p>$1,200.00</p>
+                    </div>
+                    <div class="lease-detail">
+                        <h4>Security Deposit</h4>
+                        <p>$1,200.00</p>
+                    </div>
+                    <div class="lease-detail">
+                        <h4>Renewal Deadline</h4>
+                        <p>Oct 1, 2025</p>
+                    </div>
+                    <a href="#lease-details" class="view-details-link">View Full Lease Details</a>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/resident.js"></script>
+</body>
+</html> 

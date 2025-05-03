@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Management System</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        /* Landing page specific styles */
+        .landing-card-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .landing-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            padding: 30px;
+            transition: transform 0.3s ease;
+        }
+        
+        .landing-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .landing-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .landing-card p {
+            color: #7f8c8d;
+            margin-bottom: 25px;
+        }
+        
+        .features {
+            margin: 50px 0;
+            text-align: center;
+        }
+        
+        .features h2 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature-item {
+            background: #fff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #3498db;
+        }
+        
+        @media (max-width: 768px) {
+            .landing-card-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .landing-card {
+                width: 90%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="landing-container">
+        <header>
+            <h1>Property Management System</h1>
+            <p>Streamline your property management experience</p>
+        </header>
+        
+        <div class="landing-card-container">
+            <div class="landing-card">
+                <h3>Employee Portal</h3>
+                <p>Access the employee portal to manage properties, residents, and more.</p>
+                <a href="employee/login.html" class="btn btn-primary">Employee Login</a>
+                <div style="margin-top: 10px;">
+                    <a href="employee/register.html">Register as Employee</a>
+                </div>
+                <div style="margin-top: 20px;">
+                    <h4>Quick Links</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><a href="employee/add-employee.html">Add Employee</a></li>
+                        <li><a href="employee/add-renter.html">Add Renter</a></li>
+                        <li><a href="employee/assign-lease.html">Assign Lease</a></li>
+                        <li><a href="employee/create-project.html">Create Project</a></li>
+                        <li><a href="employee/commission-contractor.html">Commission Contractor</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="landing-card">
+                <h3>Resident Portal</h3>
+                <p>Access the resident portal to view your lease, submit maintenance requests, and pay rent.</p>
+                <a href="resident/login.html" class="btn btn-primary">Resident Login</a>
+                <div style="margin-top: 10px;">
+                    <a href="resident/register.html">Register as Resident</a>
+                </div>
+                <div style="margin-top: 20px;">
+                    <h4>Quick Links</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><a href="resident/report-issue.html">Report Maintenance Issue</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="features">
+            <h2>Features</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">💰</div>
+                    <h3>Payment Management</h3>
+                    <p>Easily handle rent payments, track payment history, and manage payment methods.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🔧</div>
+                    <h3>Maintenance Requests</h3>
+                    <p>Submit and track maintenance requests with just a few clicks.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📝</div>
+                    <h3>Lease Management</h3>
+                    <p>Easily view lease details, submit renewal or cancellation requests.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🏢</div>
+                    <h3>Property Management</h3>
+                    <p>Efficiently manage multiple properties and units from one dashboard.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">👥</div>
+                    <h3>Resident Management</h3>
+                    <p>Keep track of all resident information, communications, and histories.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <h3>Reporting & Analytics</h3>
+                    <p>Generate detailed reports and gain insights about your properties.</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer style="text-align: center; margin-top: 40px;">
+            <p>&copy; 2025 Property Management System. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html> 

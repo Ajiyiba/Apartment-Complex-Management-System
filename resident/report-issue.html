@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Issue | Property Management System</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/resident.css">
+</head>
+<body>
+    <div class="landing-container">
+        <header>
+            <h1>Property Management System</h1>
+            <h2>Report Maintenance Issue</h2>
+        </header>
+        <main>
+            <div class="login-form">
+                <form action="dashboard.html" method="POST">
+                    <div class="form-group">
+                        <label for="issue-id">Issue ID</label>
+                        <input type="text" id="issue-id" name="issue-id" class="form-control" value="ISSUE-<?php echo rand(1000, 9999); ?>" readonly>
+                        <small>Auto-generated Issue ID</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="rssn">Your SSN (RSSN)</label>
+                        <input type="text" id="rssn" name="rssn" class="form-control" pattern="[0-9]{9}" title="Please enter a 9-digit SSN" required>
+                        <small>Format: 9 digits without dashes</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="complex-number">Complex Number</label>
+                        <select id="complex-number" name="complex-number" class="form-control" required>
+                            <option value="">Select Complex</option>
+                            <option value="1">Complex 1 - Downtown</option>
+                            <option value="2">Complex 2 - Riverside</option>
+                            <option value="3">Complex 3 - Oak Hills</option>
+                            <option value="4">Complex 4 - Sunset Gardens</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="unit-number">Unit Number</label>
+                        <input type="text" id="unit-number" name="unit-number" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="issue-type">Issue Type</label>
+                        <select id="issue-type" name="issue-type" class="form-control" required>
+                            <option value="">Select Issue Type</option>
+                            <option value="plumbing">Plumbing</option>
+                            <option value="electrical">Electrical</option>
+                            <option value="hvac">HVAC/Climate Control</option>
+                            <option value="appliance">Appliance</option>
+                            <option value="structural">Structural</option>
+                            <option value="pest">Pest Control</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="priority">Priority Level</label>
+                        <select id="priority" name="priority" class="form-control" required>
+                            <option value="">Select Priority</option>
+                            <option value="low">Low - Not Urgent</option>
+                            <option value="medium">Medium - Needs Attention</option>
+                            <option value="high">High - Urgent</option>
+                            <option value="emergency">Emergency - Immediate Attention Required</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Issue Description</label>
+                        <textarea id="description" name="description" class="form-control" rows="5" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="preferred-date">Preferred Service Date</label>
+                        <input type="date" id="preferred-date" name="preferred-date" class="form-control">
+                        <small>Optional: Leave blank if urgent</small>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Issue Report</button>
+                    </div>
+                </form>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="dashboard.html">&larr; Back to Dashboard</a>
+            </div>
+        </main>
+        <footer style="text-align: center; margin-top: 40px;">
+            <p>&copy; 2025 Property Management System. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/resident.js"></script>
+    <script>
+        // Generate a random Issue ID when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const issueIdField = document.getElementById('issue-id');
+            const randomId = Math.floor(Math.random() * 9000) + 1000;
+            issueIdField.value = `ISSUE-${randomId}`;
+        });
+    </script>
+</body>
+</html> 

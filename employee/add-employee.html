@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Employee | Property Management System</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .info-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .info-card h4 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+        .info-card p {
+            margin: 3px 0;
+            font-size: 14px;
+        }
+        .empty-text {
+            font-style: italic;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="landing-container">
+        <header>
+            <h1>Property Management System</h1>
+            <h2 id="form-title">Add New Employee</h2>
+        </header>
+        <main>
+            <div class="login-form">
+                <form id="employeeForm">
+                    <div class="form-group">
+                        <label for="essn">Employee SSN (ESSN)</label>
+                        <input type="text" id="essn" name="essn" class="form-control" pattern="[0-9]{9}" title="Please enter a 9-digit SSN" required>
+                        <small>Format: 9 digits without dashes (only last 4 digits will be displayed in the system)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="salary">Salary (USD)</label>
+                        <input type="number" id="salary" name="salary" class="form-control" min="0" step="0.01" required>
+                    </div>
+                    
+                    <!-- Editable Related Information Section -->
+                    <div id="relatedInfoSection">
+                        <h3>Related Information</h3>
+                        
+                        <div class="form-group">
+                            <label for="managedComplexes">Managed Complexes</label>
+                            <select id="managedComplexes" name="managedComplexes" class="form-control" multiple>
+                                <!-- Will be populated with complexes -->
+                            </select>
+                            <small class="text-muted">Hold Ctrl/Cmd to select multiple</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="worksAtComplexes">Works At Complexes</label>
+                            <select id="worksAtComplexes" name="worksAtComplexes" class="form-control" multiple>
+                                <!-- Will be populated with complexes -->
+                            </select>
+                            <small class="text-muted">Hold Ctrl/Cmd to select multiple</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="assignedProjects">Assigned Projects</label>
+                            <select id="assignedProjects" name="assignedProjects" class="form-control" multiple>
+                                <!-- Will be populated with projects -->
+                            </select>
+                            <small class="text-muted">Hold Ctrl/Cmd to select multiple</small>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;" id="submitButton">Add Employee</button>
+                    </div>
+                </form>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="dashboard.html">&larr; Back to Dashboard</a>
+            </div>
+        </main>
+        <footer style="text-align: center; margin-top: 40px;">
+            <p>&copy; 2025 Property Management System. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/employee.js"></script>
+    <script>
+        // Global variables to store data
+        let allComplexes = [];
+        let allProjects = [];
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('employeeForm');
+            const urlParams = new URLSearchParams(window.location.search);
+            const essn = urlParams.get('essn');
+            
+            // Load all complexes and projects for the select elements
+            loadComplexes();
+            loadProjects();
+            
+            // Check if we're in edit mode (ESSN provided in URL)
+            if (essn) {
+                console.log('Edit mode detected, loading employee with ESSN:', essn);
+                
+                // Change page title to Edit Employee
+                document.querySelector('h2#form-title').textContent = 'Edit Employee';
+                document.querySelector('button[type="submit"]').textContent = 'Update Employee';
+                
+                // Load employee data
+                loadEmployeeData(essn);
+            } else {
+                // For new employees, hide the related info section initially
+                document.getElementById('relatedInfoSection').style.display = 'none';
+            }
+            
+            // Add form submit handler
+            form.addEventListener('submit', async function(event) {
+                event.preventDefault();
+                
+                // Get form data
+                const managedComplexesSelect = document.getElementById('managedComplexes');
+                const worksAtComplexesSelect = document.getElementById('worksAtComplexes');
+                const assignedProjectsSelect = document.getElementById('assignedProjects');
+                
+                // Get selected options
+                const managedComplexes = Array.from(managedComplexesSelect.selectedOptions).map(option => option.value);
+                const worksAtComplexes = Array.from(worksAtComplexesSelect.selectedOptions).map(option => option.value);
+                
+                // Get project assignments with complex numbers
+                const assignedProjects = Array.from(assignedProjectsSelect.selectedOptions).map(option => {
+                    // Find the project in allProjects to get its complex number
+                    const projectId = option.value;
+                    const project = allProjects.find(p => p.Project_ID == projectId);
+                    
+                    if (project) {
+                        return {
+                            projectId: projectId,
+                            complexNumber: project.Complex_Number
+                        };
+                    } else {
+                        console.warn(`Could not find complex number for project ${projectId}`);
+                        return null;
+                    }
+                }).filter(Boolean); // Remove any null entries
+                
+                // Store original selections for comparison after update
+                const originalManagedComplexes = [...managedComplexes];
+                
+                // Log selections for debugging
+                console.log('Managed complexes selected:', managedComplexes);
+                console.log('Works at complexes selected:', worksAtComplexes);
+                console.log('Assigned projects selected:', assignedProjects);
+                
+                const formData = {
+                    essn: document.getElementById('essn').value.replace(/\D/g, ''),
+                    name: document.getElementById('name').value,
+                    salary: document.getElementById('salary').value,
+                    managedComplexes: managedComplexes,
+                    worksAtComplexes: worksAtComplexes,
+                    assignedProjects: assignedProjects
+                };
+                
+                console.log('Submitting form data:', formData);
+                
+                try {
+                    let response;
+                    
+                    if (essn) {
+                        // Update existing employee
+                        response = await updateEmployee(formData);
+                    } else {
+                        // Add new employee
+                        response = await addEmployee(formData);
+                    }
+                    
+                    console.log('API response:', response);
+                    
+                    if (response.success) {
+                        // Check if we need to reload data to show updated complex assignments
+                        if (essn && response.keptManagedComplexes && response.keptManagedComplexes.length > 0) {
+                            // Show notification about complexes that need a manager
+                            const keptComplexes = response.keptManagedComplexes.map(c => c.toString());
+                            const complexNames = allComplexes
+                                .filter(c => keptComplexes.includes(c.Complex_Number.toString()))
+                                .map(c => `${c.Complex_Number} - ${c.Street}, ${c.City}`)
+                                .join(', ');
+                            
+                            alert(`Employee was updated successfully, but some complexes require a manager and could not be unassigned: ${complexNames}. Please assign another manager to these complexes first if you wish to remove this employee as manager.`);
+                        } else {
+                            alert(essn ? 'Employee updated successfully!' : 'Employee added successfully!');
+                        }
+                        
+                        // Force refresh the employee data before redirecting
+                        if (!essn) {
+                            // If it's a new employee, reset the cache by calling getEmployees with force refresh
+                            try {
+                                console.log('Refreshing employee data after adding new employee');
+                                // Use multiple methods to ensure cache is invalidated
+                                const cacheResetOptions = { 
+                                    method: 'GET',
+                                    cache: 'no-store',
+                                    headers: { 
+                                        'Cache-Control': 'no-cache, no-store, must-revalidate',
+                                        'Pragma': 'no-cache',
+                                        'Expires': '0'
+                                    }
+                                };
+                                
+                                // Add a timestamp to ensure the request is unique
+                                const timestamp = new Date().getTime();
+                                await fetch(`../server/api.php?endpoint=employees&nocache=${timestamp}`, cacheResetOptions);
+                                
+                                // Add a slight delay to ensure server processes are complete
+                                await new Promise(resolve => setTimeout(resolve, 500));
+                                
+                                // Redirect with a parameter to indicate a new employee was added
+                                window.location.href = 'dashboard.html?newEmployee=true&tab=employees';
+                            } catch (err) {
+                                console.warn('Failed to refresh employee cache:', err);
+                                // Still redirect even if cache refresh fails
+                                window.location.href = 'dashboard.html?tab=employees';
+                            }
+                        } else {
+                            window.location.href = 'dashboard.html?tab=employees';
+                        }
+                    } else {
+                        if (response.error && (response.error.includes('NOT NULL constraint') || response.error.includes('require a manager'))) {
+                            const keptComplexes = response.keptManagedComplexes || [];
+                            if (keptComplexes.length > 0) {
+                                // Try to get complex names from our loaded data
+                                const complexNames = allComplexes
+                                    .filter(c => keptComplexes.includes(c.Complex_Number.toString()))
+                                    .map(c => `${c.Complex_Number} - ${c.Street}, ${c.City}`)
+                                    .join(', ');
+                                
+                                if (complexNames) {
+                                    alert(`Cannot update employee. The following complexes require a manager: ${complexNames}. Please add another employee first and assign them as managers to these complexes.`);
+                                } else {
+                                    alert(`Cannot update employee. Some complexes require a manager and could not be unassigned. Please add another employee first.`);
+                                }
+                            } else {
+                                alert('Failed to update employee. Some complexes require a manager and could not be unassigned. Please add another employee first.');
+                            }
+                        } else {
+                            alert(response.error || 'Failed to save employee data. Please try again.');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error saving employee data:', error);
+                    alert('Failed to save employee data. Please try again later.');
+                }
+            });
+        });
+        
+        // Function to load employee data for editing
+        async function loadEmployeeData(essn) {
+            try {
+                // Show form as loading
+                document.getElementById('essn').disabled = true;
+                document.getElementById('name').disabled = true;
+                document.getElementById('salary').disabled = true;
+                document.getElementById('submitButton').disabled = true;
+                
+                console.log('Original ESSN from URL parameter:', essn);
+                
+                // Clean the ESSN (remove any dashes) before sending to the API
+                const cleanEssn = essn.replace(/\D/g, '');
+                console.log('Cleaned ESSN for API request:', cleanEssn);
+                
+                if (cleanEssn.length !== 9) {
+                    console.error('Invalid ESSN format. Must be 9 digits:', cleanEssn);
+                    throw new Error('Invalid ESSN format. Must be 9 digits.');
+                }
+                
+                try {
+                    const response = await getEmployee(cleanEssn);
+                    console.log('Employee data response:', response);
+                    
+                    if (response && response.success && response.data) {
+                        const employee = response.data;
+                        console.log('Loaded employee data:', employee);
+                        
+                        // Rename 'Projects' to 'AssignedProjects' if needed
+                        if (employee.Projects && !employee.AssignedProjects) {
+                            employee.AssignedProjects = employee.Projects;
+                            console.log('Renamed Projects to AssignedProjects');
+                        }
+                        
+                        // Show the related info section
+                        document.getElementById('relatedInfoSection').style.display = 'block';
+                        
+                        // Populate form fields
+                        document.getElementById('essn').value = employee.ESSN;
+                        document.getElementById('essn').readOnly = true; // ESSN shouldn't be editable in edit mode
+                        document.getElementById('name').value = employee.Name;
+                        
+                        // Handle different salary formats
+                        if (employee.Salary) {
+                            // Try to parse the salary to handle different formats
+                            let salaryValue = employee.Salary;
+                            if (typeof salaryValue === 'string') {
+                                // Remove currency symbols and commas
+                                salaryValue = salaryValue.replace(/[$,]/g, '');
+                            }
+                            document.getElementById('salary').value = parseFloat(salaryValue);
+                        }
+                        
+                        // Make sure complexes and projects are loaded
+                        if (!allComplexes.length || !allProjects.length) {
+                            console.log('Waiting for complexes and projects to load...');
+                            await Promise.all([
+                                loadComplexes(),
+                                loadProjects()
+                            ]);
+                            await new Promise(resolve => setTimeout(resolve, 500));
+                        }
+                        
+                        // First deselect all options in all multi-selects to start fresh
+                        const managedComplexesSelect = document.getElementById('managedComplexes');
+                        const worksAtComplexesSelect = document.getElementById('worksAtComplexes');
+                        const assignedProjectsSelect = document.getElementById('assignedProjects');
+                        
+                        if (managedComplexesSelect) {
+                            for (let i = 0; i < managedComplexesSelect.options.length; i++) {
+                                managedComplexesSelect.options[i].selected = false;
+                            }
+                        }
+                        
+                        if (worksAtComplexesSelect) {
+                            for (let i = 0; i < worksAtComplexesSelect.options.length; i++) {
+                                worksAtComplexesSelect.options[i].selected = false;
+                            }
+                        }
+                        
+                        if (assignedProjectsSelect) {
+                            for (let i = 0; i < assignedProjectsSelect.options.length; i++) {
+                                assignedProjectsSelect.options[i].selected = false;
+                            }
+                        }
+                        
+                        // Select managed complexes if they exist
+                        if (employee.ManagedComplexes && employee.ManagedComplexes.length > 0) {
+                            console.log('Setting managed complexes:', employee.ManagedComplexes);
+                            if (managedComplexesSelect) {
+                                for (let i = 0; i < managedComplexesSelect.options.length; i++) {
+                                    const option = managedComplexesSelect.options[i];
+                                    const isAssigned = employee.ManagedComplexes.some(complex => 
+                                        complex.Complex_Number == option.value
+                                    );
+                                    
+                                    if (isAssigned) {
+                                        option.selected = true;
+                                    }
+                                }
+                            }
+                        } else {
+                            console.log('No managed complexes to set');
+                        }
+                        
+                        // Select works at complexes if they exist
+                        if (employee.WorksAtComplexes && employee.WorksAtComplexes.length > 0) {
+                            console.log('Setting works at complexes:', employee.WorksAtComplexes);
+                            if (worksAtComplexesSelect) {
+                                for (let i = 0; i < worksAtComplexesSelect.options.length; i++) {
+                                    const option = worksAtComplexesSelect.options[i];
+                                    const isAssigned = employee.WorksAtComplexes.some(complex => 
+                                        complex.Complex_Number == option.value
+                                    );
+                                    
+                                    if (isAssigned) {
+                                        option.selected = true;
+                                    }
+                                }
+                            }
+                        } else {
+                            console.log('No works-at complexes to set');
+                        }
+                        
+                        // Select assigned projects if they exist
+                        if (employee.AssignedProjects && employee.AssignedProjects.length > 0) {
+                            console.log('Setting assigned projects:', employee.AssignedProjects);
+                            if (assignedProjectsSelect) {
+                                for (let i = 0; i < assignedProjectsSelect.options.length; i++) {
+                                    const option = assignedProjectsSelect.options[i];
+                                    const isAssigned = employee.AssignedProjects.some(project => 
+                                        project.Project_ID == option.value
+                                    );
+                                    
+                                    if (isAssigned) {
+                                        option.selected = true;
+                                    }
+                                }
+                            }
+                        } else {
+                            console.log('No assigned projects to set');
+                        }
+                    } else {
+                        throw new Error(response?.error || 'Failed to load employee data');
+                    }
+                } catch (error) {
+                    console.error('API error loading employee data:', error);
+                    throw error;
+                }
+            } catch (error) {
+                console.error('Error loading employee data:', error);
+                alert('Failed to load employee data: ' + (error.message || 'Unknown error'));
+                // Redirect back to dashboard
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 2000);
+            } finally {
+                // Re-enable form fields
+                document.getElementById('essn').disabled = false;
+                document.getElementById('name').disabled = false;
+                document.getElementById('salary').disabled = false;
+                document.getElementById('submitButton').disabled = false;
+            }
+        }
+        
+        // Load all complexes for select elements
+        async function loadComplexes() {
+            try {
+                console.log('Loading complexes...');
+                const response = await fetch('../server/api.php?endpoint=complexes');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                if (data.success && data.data) {
+                    allComplexes = data.data;
+                    console.log('All complexes loaded:', allComplexes.length);
+                    
+                    // Populate the complex selects
+                    populateComplexSelects(allComplexes);
+                    return allComplexes;
+                }
+                return [];
+            } catch (error) {
+                console.error('Error loading complexes:', error);
+                return [];
+            }
+        }
+        
+        // Load all projects for select elements
+        async function loadProjects() {
+            try {
+                console.log('Loading projects...');
+                const response = await fetch('../server/api.php?endpoint=projects');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                if (data.success && data.data) {
+                    allProjects = data.data;
+                    console.log('All projects loaded:', allProjects.length);
+                    
+                    // Populate the project select
+                    populateProjectSelect(allProjects);
+                    return allProjects;
+                }
+                return [];
+            } catch (error) {
+                console.error('Error loading projects:', error);
+                return [];
+            }
+        }
+        
+        // Populate complex selects with data
+        function populateComplexSelects(complexes) {
+            const managedComplexesSelect = document.getElementById('managedComplexes');
+            const worksAtComplexesSelect = document.getElementById('worksAtComplexes');
+            
+            if (managedComplexesSelect && complexes.length > 0) {
+                managedComplexesSelect.innerHTML = '';
+                complexes.forEach(complex => {
+                    const option = document.createElement('option');
+                    option.value = complex.Complex_Number;
+                    option.textContent = `${complex.Complex_Number} - ${complex.Street}, ${complex.City}`;
+                    managedComplexesSelect.appendChild(option);
+                });
+            }
+            
+            if (worksAtComplexesSelect && complexes.length > 0) {
+                worksAtComplexesSelect.innerHTML = '';
+                complexes.forEach(complex => {
+                    const option = document.createElement('option');
+                    option.value = complex.Complex_Number;
+                    option.textContent = `${complex.Complex_Number} - ${complex.Street}, ${complex.City}`;
+                    worksAtComplexesSelect.appendChild(option);
+                });
+            }
+        }
+        
+        // Populate project select with data
+        function populateProjectSelect(projects) {
+            const assignedProjectsSelect = document.getElementById('assignedProjects');
+            
+            if (assignedProjectsSelect && projects.length > 0) {
+                assignedProjectsSelect.innerHTML = '';
+                projects.forEach(project => {
+                    const option = document.createElement('option');
+                    option.value = project.Project_ID;
+                    option.textContent = `${project.Project_ID} - ${project.Description}`;
+                    assignedProjectsSelect.appendChild(option);
+                });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Project | Property Management System</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+    <div class="landing-container">
+        <header>
+            <h1>Property Management System</h1>
+            <h2>Create Development Project</h2>
+        </header>
+        <main>
+            <div class="login-form">
+                <form action="dashboard.html" method="POST">
+                    <div class="form-group">
+                        <label for="project-id">Project ID</label>
+                        <input type="text" id="project-id" name="project-id" class="form-control" value="PROJ-<?php echo rand(1000, 9999); ?>" readonly>
+                        <small>Auto-generated Project ID</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-name">Project Name</label>
+                        <input type="text" id="project-name" name="project-name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="complex">Complex</label>
+                        <select id="complex" name="complex" class="form-control" required>
+                            <option value="">Select Complex</option>
+                            <option value="1">Complex 1 - Downtown</option>
+                            <option value="2">Complex 2 - Riverside</option>
+                            <option value="3">Complex 3 - Oak Hills</option>
+                            <option value="4">Complex 4 - Sunset Gardens</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="budget">Budget (USD)</label>
+                        <input type="number" id="budget" name="budget" class="form-control" min="0" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="start-date">Start Date</label>
+                        <input type="date" id="start-date" name="start-date" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="estimated-end-date">Estimated End Date</label>
+                        <input type="date" id="estimated-end-date" name="estimated-end-date" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-type">Project Type</label>
+                        <select id="project-type" name="project-type" class="form-control" required>
+                            <option value="">Select Project Type</option>
+                            <option value="renovation">Renovation</option>
+                            <option value="maintenance">Major Maintenance</option>
+                            <option value="expansion">Expansion</option>
+                            <option value="infrastructure">Infrastructure Upgrade</option>
+                            <option value="landscaping">Landscaping</option>
+                            <option value="amenities">Amenities Addition</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Project Description</label>
+                        <textarea id="description" name="description" class="form-control" rows="5" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-manager">Project Manager (ESSN)</label>
+                        <input type="text" id="project-manager" name="project-manager" class="form-control" pattern="[0-9]{9}" title="Please enter a 9-digit SSN" required>
+                        <small>Format: 9 digits without dashes</small>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Create Project</button>
+                    </div>
+                </form>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="dashboard.html">&larr; Back to Dashboard</a>
+            </div>
+        </main>
+        <footer style="text-align: center; margin-top: 40px;">
+            <p>&copy; 2025 Property Management System. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/employee.js"></script>
+    <script>
+        // Generate a random Project ID when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const projectIdField = document.getElementById('project-id');
+            const randomId = Math.floor(Math.random() * 9000) + 1000;
+            projectIdField.value = `PROJ-${randomId}`;
+        });
+    </script>
+</body>
+</html> 

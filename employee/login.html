@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Login | Property Management System</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+    <div class="landing-container">
+        <header>
+            <h1>Property Management System</h1>
+            <h2>Employee Login</h2>
+        </header>
+        <main>
+            <div class="login-form">
+                <form action="dashboard.html" method="GET">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div style="position: relative;">
+                            <input type="password" id="password" name="password" class="form-control" required>
+                            <span onclick="togglePasswordVisibility('password')" style="position: absolute; right: 10px; top: 10px; cursor: pointer;">👁️</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <a href="#">Forgot Password?</a>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <p>Don't have an account? <a href="register.html">Register here</a></p>
+                    </div>
+                </form>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="../index.html">&larr; Back to Home</a>
+            </div>
+        </main>
+        <footer style="text-align: center; margin-top: 40px;">
+            <p>&copy; 2025 Property Management System. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html> 

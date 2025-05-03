@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Complex | Property Management System</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+        .complex-details {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .complex-details h3 {
+            margin-top: 0;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        .detail-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .detail-label {
+            flex: 0 0 120px;
+            font-weight: bold;
+        }
+        .detail-value {
+            flex: 1;
+        }
+        .manager-section {
+            background-color: #e6f7ff;
+            border: 1px solid #91d5ff;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        .employee-select {
+            max-width: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="landing-container">
+        <header>
+            <h1>Property Management System</h1>
+            <h2>Manage Complex</h2>
+        </header>
+        <main>
+            <div class="login-form">
+                <div id="complex-selection" class="form-group">
+                    <label for="complex-selector">Select Complex</label>
+                    <select id="complex-selector" class="form-control">
+                        <option value="">-- Select a Complex --</option>
+                        <!-- Will be populated with complexes -->
+                    </select>
+                </div>
+                
+                <div id="complex-details" class="complex-details" style="display: none;">
+                    <h3>Complex Details</h3>
+                    <div class="detail-row">
+                        <div class="detail-label">Complex #:</div>
+                        <div class="detail-value" id="detail-complex-number"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Street:</div>
+                        <div class="detail-value" id="detail-street"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">City:</div>
+                        <div class="detail-value" id="detail-city"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">State:</div>
+                        <div class="detail-value" id="detail-state"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Current Manager:</div>
+                        <div class="detail-value" id="detail-manager"></div>
+                    </div>
+                    
+                    <div class="manager-section">
+                        <h4>Update Complex Manager</h4>
+                        <form id="updateManagerForm">
+                            <div class="form-group">
+                                <label for="manager-selector">New Manager</label>
+                                <select id="manager-selector" class="form-control employee-select" required>
+                                    <option value="">-- Select a Manager --</option>
+                                    <!-- Will be populated with employees -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary" id="update-manager-btn">Update Manager</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="dashboard.html">&larr; Back to Dashboard</a>
+            </div>
+        </main>
+        <footer style="text-align: center; margin-top: 40px;">
+            <p>&copy; 2025 Property Management System. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/api.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load complexes and employees on page load
+            loadComplexes();
+            loadEmployees();
+            
+            // Set up event listeners
+            document.getElementById('complex-selector').addEventListener('change', handleComplexSelection);
+            document.getElementById('updateManagerForm').addEventListener('submit', handleManagerUpdate);
+        });
+        
+        // Global variables to store data
+        let allComplexes = [];
+        let allEmployees = [];
+        let selectedComplex = null;
+        
+        // Function to load all complexes
+        async function loadComplexes() {
+            try {
+                const response = await fetch('../server/api.php?endpoint=complexes');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                if (data.success && data.data) {
+                    allComplexes = data.data;
+                    populateComplexSelector(allComplexes);
+                } else {
+                    showError('Failed to load complexes');
+                }
+            } catch (error) {
+                console.error('Error loading complexes:', error);
+                showError('Failed to load complexes: ' + error.message);
+            }
+        }
+        
+        // Function to load all employees
+        async function loadEmployees() {
+            try {
+                const response = await fetch('../server/api.php?endpoint=employees');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                if (data.success && data.data) {
+                    allEmployees = data.data;
+                    populateManagerSelector(allEmployees);
+                } else {
+                    showError('Failed to load employees');
+                }
+            } catch (error) {
+                console.error('Error loading employees:', error);
+                showError('Failed to load employees: ' + error.message);
+            }
+        }
+        
+        // Function to populate the complex selector dropdown
+        function populateComplexSelector(complexes) {
+            const selector = document.getElementById('complex-selector');
+            selector.innerHTML = '<option value="">-- Select a Complex --</option>';
+            
+            complexes.forEach(complex => {
+                const option = document.createElement('option');
+                option.value = complex.Complex_Number;
+                option.textContent = `${complex.Complex_Number} - ${complex.Street}, ${complex.City}`;
+                selector.appendChild(option);
+            });
+            
+            // Check URL parameters for preselected complex
+            const urlParams = new URLSearchParams(window.location.search);
+            const complexParam = urlParams.get('complex');
+            if (complexParam) {
+                selector.value = complexParam;
+                handleComplexSelection();
+            }
+        }
+        
+        // Function to populate the manager selector dropdown
+        function populateManagerSelector(employees) {
+            const selector = document.getElementById('manager-selector');
+            selector.innerHTML = '<option value="">-- Select a Manager --</option>';
+            
+            employees.forEach(employee => {
+                const option = document.createElement('option');
+                option.value = employee.ESSN;
+                option.textContent = `${employee.Name} (${employee.ESSN})`;
+                selector.appendChild(option);
+            });
+        }
+        
+        // Function to handle complex selection
+        function handleComplexSelection() {
+            const complexNumber = document.getElementById('complex-selector').value;
+            if (!complexNumber) {
+                document.getElementById('complex-details').style.display = 'none';
+                selectedComplex = null;
+                return;
+            }
+            
+            selectedComplex = allComplexes.find(complex => complex.Complex_Number == complexNumber);
+            if (selectedComplex) {
+                // Display complex details
+                document.getElementById('detail-complex-number').textContent = selectedComplex.Complex_Number;
+                document.getElementById('detail-street').textContent = selectedComplex.Street;
+                document.getElementById('detail-city').textContent = selectedComplex.City;
+                document.getElementById('detail-state').textContent = selectedComplex.Addr_State;
+                document.getElementById('detail-manager').textContent = 
+                    `${selectedComplex.Manager_Name} (${selectedComplex.Manager})`;
+                
+                // Preselect current manager in the dropdown
+                document.getElementById('manager-selector').value = selectedComplex.Manager;
+                
+                // Show the details section
+                document.getElementById('complex-details').style.display = 'block';
+            } else {
+                showError('Complex not found');
+                document.getElementById('complex-details').style.display = 'none';
+            }
+        }
+        
+        // Function to handle manager update submission
+        async function handleManagerUpdate(event) {
+            event.preventDefault();
+            
+            if (!selectedComplex) {
+                showError('No complex selected');
+                return;
+            }
+            
+            const managerEssn = document.getElementById('manager-selector').value;
+            if (!managerEssn) {
+                showError('Please select a manager');
+                return;
+            }
+            
+            // Disable the submit button while processing
+            const submitButton = document.getElementById('update-manager-btn');
+            const originalButtonText = submitButton.textContent;
+            submitButton.textContent = 'Updating...';
+            submitButton.disabled = true;
+            
+            try {
+                const response = await fetch('../server/api.php?endpoint=update_complex_manager', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        complexNumber: selectedComplex.Complex_Number,
+                        managerEssn: managerEssn
+                    }),
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Update the local complex data
+                    selectedComplex.Manager = data.managerEssn;
+                    selectedComplex.Manager_Name = data.managerName;
+                    
+                    // Update the displayed details
+                    document.getElementById('detail-manager').textContent = 
+                        `${data.managerName} (${data.managerEssn})`;
+                    
+                    // Show success message
+                    alert('Complex manager updated successfully!');
+                    
+                    // Reload complexes to get the latest data
+                    loadComplexes();
+                } else {
+                    showError(data.error || 'Failed to update complex manager');
+                }
+            } catch (error) {
+                console.error('Error updating complex manager:', error);
+                showError('Failed to update complex manager: ' + error.message);
+            } finally {
+                // Re-enable the submit button
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+            }
+        }
+        
+        // Helper function to show error messages
+        function showError(message) {
+            alert('Error: ' + message);
+        }
+    </script>
+</body>
+</html> 

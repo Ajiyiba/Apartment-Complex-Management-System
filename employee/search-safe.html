@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Safe Search Form</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+        .info-note {
+            color: #0275d8;
+            font-style: italic;
+            margin-top: 20px;
+            border: 1px solid #0275d8;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Safe Employee Search (Prepared Statement)</h1>
+        <form method="GET" action="../server/search-safe-result.php">
+            <div class="form-group">
+                <label for="search">Enter Exact Name:</label>
+                <input type="text" id="search" name="search" class="form-control" placeholder="Enter full name (case-insensitive)" required>
+                <small>Must be an exact match of the full name (A/a doesn't matter)</small>
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+        
+        <div class="info-note">
+            <p><strong>Note:</strong> This search uses prepared statements to safely query the database.
+            It requires an exact match of the full employee name, but is case-insensitive.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vulnerable Update Form</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+        .vulnerability-note {
+            color: #d9534f;
+            font-style: italic;
+            margin-top: 20px;
+            border: 1px solid #d9534f;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .search-section, .update-section {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        h3 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Vulnerable Employee Update</h1>
+        <form method="POST" action="../server/update-process.php">
+            <div class="search-section">
+                <h3>Search Criteria (Select one)</h3>
+                <div class="form-group">
+                    <label for="searchName">Search by Partial Name:</label>
+                    <input type="text" id="searchName" name="searchName" class="form-control" placeholder="Enter partial name to search">
+                    <small>Updates all employees matching this partial name!</small>
+                </div>
+                <div class="form-group">
+                    <label for="essn">OR Employee SSN (optional):</label>
+                    <input type="text" id="essn" name="essn" class="form-control" placeholder="Enter SSN if known">
+                    <small>Leave both empty to potentially update all employees!</small>
+                </div>
+            </div>
+            
+            <div class="update-section">
+                <h3>Update Information</h3>
+                <div class="form-group">
+                    <label for="name">New Employee Name (optional):</label>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="New name to set">
+                </div>
+                <div class="form-group">
+                    <label for="salary">New Salary (optional):</label>
+                    <input type="text" id="salary" name="salary" class="form-control" placeholder="New salary to set">
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+        
+        <div class="vulnerability-note">
+            <p><strong>Warning:</strong> This form is intentionally vulnerable for SQL injection demonstration. 
+            The partial name search can update multiple employees at once, and searching without input could update all employees!</p>
+        </div>
+    </div>
+</body>
+</html>

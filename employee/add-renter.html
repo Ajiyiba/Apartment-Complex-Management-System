@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Renter | Property Management System</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+    <div class="landing-container">
+        <header>
+            <h1>Property Management System</h1>
+            <h2>Add New Renter</h2>
+        </header>
+        <main>
+            <div class="login-form">
+                <form action="dashboard.html" method="POST">
+                    <div class="form-group">
+                        <label for="rssn">Renter SSN (RSSN)</label>
+                        <input type="text" id="rssn" name="rssn" class="form-control" pattern="[0-9]{9}" title="Please enter a 9-digit SSN" required>
+                        <small>Format: 9 digits without dashes</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="credit-score">Credit Score</label>
+                        <input type="number" id="credit-score" name="credit-score" class="form-control" min="300" max="850" step="1" required>
+                        <small>Range: 300-850</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="complex">Complex</label>
+                        <select id="complex" name="complex" class="form-control" required>
+                            <option value="">Select Complex</option>
+                            <option value="1">Complex 1 - Downtown</option>
+                            <option value="2">Complex 2 - Riverside</option>
+                            <option value="3">Complex 3 - Oak Hills</option>
+                            <option value="4">Complex 4 - Sunset Gardens</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="room">Room/Unit Number</label>
+                        <input type="text" id="room" name="room" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Add Renter</button>
+                    </div>
+                </form>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="dashboard.html">&larr; Back to Dashboard</a>
+            </div>
+        </main>
+        <footer style="text-align: center; margin-top: 40px;">
+            <p>&copy; 2025 Property Management System. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/employee.js"></script>
+</body>
+</html> 

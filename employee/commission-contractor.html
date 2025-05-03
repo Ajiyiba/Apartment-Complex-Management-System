@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commission Contractor | Property Management System</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+    <div class="landing-container">
+        <header>
+            <h1>Property Management System</h1>
+            <h2>Commission External Contractor</h2>
+        </header>
+        <main>
+            <div class="login-form">
+                <form action="dashboard.html" method="POST">
+                    <div class="form-group">
+                        <label for="project-id">Project ID</label>
+                        <input type="text" id="project-id" name="project-id" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="company-name">Company Name</label>
+                        <input type="text" id="company-name" name="company-name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="num-hours">Number of Hours</label>
+                        <input type="number" id="num-hours" name="num-hours" class="form-control" min="1" step="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="hourly-rate">Hourly Rate (USD)</label>
+                        <input type="number" id="hourly-rate" name="hourly-rate" class="form-control" min="0" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="budget">Allocated Budget (USD)</label>
+                        <input type="number" id="budget" name="budget" class="form-control" min="0" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="start-date">Start Date</label>
+                        <input type="date" id="start-date" name="start-date" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="end-date">End Date</label>
+                        <input type="date" id="end-date" name="end-date" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="scope">Scope of Work</label>
+                        <textarea id="scope" name="scope" class="form-control" rows="5" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-person">Contractor Contact Person</label>
+                        <input type="text" id="contact-person" name="contact-person" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-email">Contractor Email</label>
+                        <input type="email" id="contact-email" name="contact-email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-phone">Contractor Phone</label>
+                        <input type="tel" id="contact-phone" name="contact-phone" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Commission Contractor</button>
+                    </div>
+                </form>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="dashboard.html">&larr; Back to Dashboard</a>
+            </div>
+        </main>
+        <footer style="text-align: center; margin-top: 40px;">
+            <p>&copy; 2025 Property Management System. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/employee.js"></script>
+    <script>
+        // Calculate total cost when hours or rate changes
+        document.addEventListener('DOMContentLoaded', function() {
+            const hoursField = document.getElementById('num-hours');
+            const rateField = document.getElementById('hourly-rate');
+            const budgetField = document.getElementById('budget');
+            
+            function updateBudget() {
+                const hours = parseFloat(hoursField.value) || 0;
+                const rate = parseFloat(rateField.value) || 0;
+                const total = hours * rate;
+                if (total > 0) {
+                    budgetField.value = total.toFixed(2);
+                }
+            }
+            
+            hoursField.addEventListener('change', updateBudget);
+            rateField.addEventListener('change', updateBudget);
+        });
+    </script>
+</body>
+</html> 
